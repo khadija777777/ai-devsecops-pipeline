@@ -1,0 +1,383 @@
+<style>
+  .ads-page{
+    --bg-deep: #05080f;
+    --bg-panel: #0f1a34;
+    --bg-panel-2: #0c1730;
+    --bg-input: #0a1428;
+    --border-soft: rgba(94,140,255,0.14);
+    --border-strong: rgba(94,140,255,0.32);
+    --accent: #3d7dff;
+    --accent-bright: #5b9dff;
+    --accent-glow: rgba(61,125,255,0.35);
+    --success: #22c55e;
+    --success-glow: rgba(34,197,94,0.25);
+    --warning: #eab308;
+    --warning-glow: rgba(234,179,8,0.2);
+    --danger: #ef4444;
+    --danger-glow: rgba(239,68,68,0.2);
+    --text-primary: #e7ecf7;
+    --text-secondary: #8291b3;
+    --text-muted: #5a6785;
+    --font-ui: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    min-height:100vh;
+    background: var(--bg-deep);
+    font-family: var(--font-ui);
+    color: var(--text-primary);
+    padding: 48px 56px 80px;
+    position:relative;
+    overflow:hidden;
+  }
+
+  /* ============ FOND TEXTURÉ ============ */
+  .ads-bg-glow{ position:absolute; border-radius:50%; filter: blur(100px); pointer-events:none; z-index:0; }
+  .ads-bg-glow.g1{ width:520px; height:520px; top:-200px; right:-140px; background: radial-gradient(circle, rgba(61,125,255,0.22), transparent 70%); }
+  .ads-bg-glow.g2{ width:460px; height:460px; bottom:-180px; left:-120px; background: radial-gradient(circle, rgba(34,197,94,0.10), transparent 70%); }
+  .ads-bg-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(94,140,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94,140,255,0.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 30%, transparent 85%);
+    z-index:0;
+  }
+
+  .ads-content{ position:relative; z-index:1; max-width:1320px; margin:0 auto; }
+
+  /* ============ HEADER ============ */
+  .ads-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:40px;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+
+  .ads-header .eyebrow{
+    font-family: var(--font-mono);
+    font-size:11px;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    color: var(--accent-bright);
+    margin-bottom:8px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .ads-header .eyebrow::before{
+    content:"";
+    width:6px; height:6px; border-radius:50%;
+    background: var(--success);
+    box-shadow: 0 0 8px var(--success-glow);
+  }
+
+  .ads-header h1{ font-size:32px; font-weight:800; letter-spacing:-0.5px; color: var(--text-primary); margin-bottom:6px; }
+  .ads-header p{ color: var(--text-secondary); font-size:14.5px; margin:0; }
+
+  .btn-create{
+    display:inline-flex; align-items:center; gap:9px;
+    background: linear-gradient(135deg, var(--accent), #2f66e0);
+    color:#fff; font-weight:600; font-size:14.5px;
+    padding:13px 24px; border-radius:11px; border:none;
+    text-decoration:none;
+    box-shadow: 0 8px 24px var(--accent-glow);
+    transition: transform .2s ease, box-shadow .2s ease;
+    position:relative; overflow:hidden;
+  }
+  .btn-create:hover{ transform: translateY(-2px); box-shadow: 0 12px 32px var(--accent-glow); color:#fff; }
+  .btn-create::after{
+    content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: skewX(-20deg); transition: left .5s ease;
+  }
+  .btn-create:hover::after{ left:130%; }
+
+  /* ============ STATS ============ */
+  .ads-stats{ display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; margin-bottom:48px; }
+
+  .ads-stat{
+    background: var(--bg-panel);
+    border:1px solid var(--border-soft);
+    border-radius:16px;
+    padding:22px 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .ads-stat::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:1px;
+    background: linear-gradient(90deg, transparent, var(--accent-bright), transparent);
+    opacity:.5;
+  }
+  .ads-stat .icon{
+    width:38px; height:38px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    background: rgba(61,125,255,0.12);
+    border:1px solid var(--border-soft);
+    color: var(--accent-bright);
+    font-size:17px;
+    margin-bottom:14px;
+  }
+  .ads-stat.stat-success .icon{ background: var(--success-glow); border-color: rgba(34,197,94,0.3); color: var(--success); }
+
+  .ads-stat .label{ font-size:12.5px; color: var(--text-secondary); font-weight:600; margin-bottom:4px; text-transform:uppercase; letter-spacing:.4px; }
+  .ads-stat .value{ font-family: var(--font-mono); font-size:30px; font-weight:700; color: var(--text-primary); }
+  .ads-stat.stat-success .value{ color: var(--success); }
+
+  /* ============ GRILLE D'ANNONCES ============ */
+  .ads-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; }
+
+  .ad-card{
+    background: var(--bg-panel);
+    border:1px solid var(--border-soft);
+    border-radius:18px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .ad-card:hover{
+    transform: translateY(-4px);
+    border-color: var(--border-strong);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+  }
+
+  .ad-card-media{ position:relative; height:210px; overflow:hidden; }
+  .ad-card-media img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .4s ease; }
+  .ad-card:hover .ad-card-media img{ transform: scale(1.05); }
+
+  .ad-card-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, transparent 40%, rgba(5,8,15,0.85) 100%);
+  }
+
+  .ad-card-badge{
+    position:absolute; bottom:12px; left:14px; z-index:2;
+    font-family: var(--font-mono);
+    font-size:10.5px; font-weight:600; letter-spacing:.5px; text-transform:uppercase;
+    padding:5px 11px; border-radius:20px;
+    background: rgba(61,125,255,0.18);
+    border:1px solid rgba(94,140,255,0.4);
+    color: var(--accent-bright);
+    backdrop-filter: blur(4px);
+  }
+
+  .ad-card-body{ padding:20px 22px 4px; flex:1; }
+
+  .ad-card-body h4{ font-size:17px; font-weight:700; color: var(--text-primary); margin-bottom:8px; }
+
+  .ad-card-body p{ font-size:13.5px; color: var(--text-secondary); line-height:1.6; margin-bottom:16px; }
+
+  .ad-card-price{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-bottom:18px;
+    border-bottom:1px solid var(--border-soft);
+    margin-bottom:16px;
+  }
+  .ad-card-price .price-label{ font-size:11px; color: var(--text-muted); font-family: var(--font-mono); text-transform:uppercase; letter-spacing:.5px; }
+  .ad-card-price .price-value{ font-size:21px; font-weight:700; color: var(--success); }
+
+  .ad-card-footer{ padding:0 22px 22px; }
+
+  .ad-btn{
+    display:flex; align-items:center; justify-content:center; gap:7px;
+    font-size:13.5px; font-weight:600;
+    border-radius:9px; padding:10px 14px;
+    text-decoration:none; cursor:pointer; border:1px solid transparent;
+    transition: all .18s ease;
+    width:100%;
+  }
+
+  .ad-btn-view{
+    background: rgba(61,125,255,0.08);
+    border-color: var(--border-strong);
+    color: var(--accent-bright);
+    margin-bottom:10px;
+  }
+  .ad-btn-view:hover{ background: rgba(61,125,255,0.16); color: var(--accent-bright); }
+
+.ad-btn-row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+
+/* Correction : button_to génère un <form>, il doit occuper toute la cellule */
+.ad-btn-row form{
+  margin:0;
+  width:100%;
+}
+.ad-btn-row form button{
+  width:100%;
+}
+  .ad-btn-edit{
+    background: var(--warning-glow);
+    border-color: rgba(234,179,8,0.35);
+    color: var(--warning);
+  }
+  .ad-btn-edit:hover{ background: rgba(234,179,8,0.28); color: var(--warning); }
+
+  .ad-btn-delete{
+    background: var(--danger-glow);
+    border-color: rgba(239,68,68,0.35);
+    color: var(--danger);
+  }
+  .ad-btn-delete:hover{ background: rgba(239,68,68,0.28); color: var(--danger); }
+
+  @media (max-width: 1100px){
+    .ads-stats{ grid-template-columns: 1fr 1fr; }
+    .ads-grid{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 700px){
+    .ads-page{ padding:32px 20px 60px; }
+    .ads-stats{ grid-template-columns: 1fr; }
+    .ads-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="ads-page">
+  <div class="ads-bg-grid"></div>
+  <div class="ads-bg-glow g1"></div>
+  <div class="ads-bg-glow g2"></div>
+
+  <div class="ads-content">
+
+    <!-- Header -->
+    <div class="ads-header">
+      <div>
+        <div class="eyebrow">Security Operations Center</div>
+        <h1>Advertisements</h1>
+        <p>Manage all advertisements from one centralized dashboard.</p>
+      </div>
+      <%= link_to new_ad_path, class: "btn-create" do %>
+        <i class="bi bi-plus-lg"></i> Create Advertisement
+      <% end %>
+    </div>
+
+    <!-- Stats -->
+    <div class="ads-stats">
+      <div class="ads-stat">
+        <div class="icon"><i class="bi bi-megaphone-fill"></i></div>
+        <div class="label">Total Advertisements</div>
+        <div class="value"><%= Ad.count %></div>
+      </div>
+
+      <div class="ads-stat">
+        <div class="icon"><i class="bi bi-tags-fill"></i></div>
+        <div class="label">Categories</div>
+        <div class="value"><%= Ad.select(:category).distinct.count %></div>
+      </div>
+
+      <div class="ads-stat stat-success">
+        <div class="icon"><i class="bi bi-currency-exchange"></i></div>
+        <div class="label">Average Price</div>
+        <div class="value">
+          <% if Ad.count > 0 %>
+            <%= Ad.average(:price).to_i %> DH
+          <% else %>
+            0 DH
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grille d'annonces -->
+    <div class="ads-grid">
+      <% @ads.each do |ad| %>
+        <div class="ad-card">
+
+          <div class="ad-card-media">
+            <% if ad.image.attached? %>
+              <%= image_tag ad.image %>
+            <% else %>
+              <img src="https://images.unsplash.com/photo-1517336714739-489689fd1ca8?w=900">
+            <% end %>
+            <span class="ad-card-badge"><%= ad.category %></span>
+          </div>
+
+          <div class="ad-card-body">
+<h4><%= ad.title %></h4>
+
+<p>
+  <i class="bi bi-pc-display-horizontal"></i>
+  <%= ad.operating_system.presence || "Unknown OS" %>
+</p>
+
+<p>
+  <i class="bi bi-router"></i>
+  <%= ad.ip_address.presence || "No IP Address" %>
+</p>
+
+<p>
+  <i class="bi bi-shield-check"></i>
+
+  <% case ad.criticality %>
+  <% when "Critical" %>
+    <span class="badge bg-danger">Critical</span>
+
+  <% when "High" %>
+    <span class="badge bg-warning text-dark">High</span>
+
+  <% when "Medium" %>
+    <span class="badge bg-primary">Medium</span>
+
+  <% when "Low" %>
+    <span class="badge bg-success">Low</span>
+
+  <% else %>
+    <span class="badge bg-secondary">Unknown</span>
+  <% end %>
+</p>
+
+<p>
+  <i class="bi bi-wifi"></i>
+
+  <% if ad.status == "Online" %>
+    <span class="badge bg-success">Online</span>
+
+  <% elsif ad.status == "Offline" %>
+    <span class="badge bg-danger">Offline</span>
+
+  <% else %>
+    <span class="badge bg-secondary">Unknown</span>
+  <% end %>
+</p>
+
+<p>
+  <i class="bi bi-clock-history"></i>
+
+  <% if ad.last_scan_at.present? %>
+    <%= ad.last_scan_at.strftime("%d/%m/%Y %H:%M") %>
+  <% else %>
+    Never scanned
+  <% end %>
+</p>
+
+<div class="ad-card-price">
+  <span class="price-label">Asset Value</span>
+  <span class="price-value"><%= ad.price %> DH</span>
+</div>
+          </div>
+
+          <div class="ad-card-footer">
+            <%= link_to ad, class: "ad-btn ad-btn-view" do %>
+              <i class="bi bi-eye"></i> View
+            <% end %>
+
+            <div class="ad-btn-row">
+              <%= link_to edit_ad_path(ad), class: "ad-btn ad-btn-edit" do %>
+                <i class="bi bi-pencil"></i> Edit
+              <% end %>
+
+              <%= button_to ad,
+                  method: :delete,
+                  class: "ad-btn ad-btn-delete",
+                  form: { data: { turbo_confirm: "Delete this advertisement?" } } do %>
+                <i class="bi bi-trash"></i> Delete
+              <% end %>
+            </div>
+          </div>
+
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

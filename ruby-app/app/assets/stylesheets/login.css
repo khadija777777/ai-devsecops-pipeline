@@ -1,0 +1,456 @@
+/* ===================================================
+   AI DEVSECOPS LOGIN
+=================================================== */
+
+body{
+    margin:0;
+    padding:0;
+    font-family:'Segoe UI',sans-serif;
+    background:
+        radial-gradient(circle at top right,#1d4ed8 0%,transparent 35%),
+        radial-gradient(circle at bottom left,#0f766e 0%,transparent 35%),
+        linear-gradient(135deg,#020617,#081126,#111827);
+    min-height:100vh;
+}
+
+/* ===============================
+   PAGE
+================================ */
+
+.login-page{
+
+    display:flex;
+
+    min-height:100vh;
+
+    width:100%;
+
+}
+
+/* ===============================
+   LEFT SIDE
+================================ */
+
+.login-left{
+
+    width:50%;
+
+    color:white;
+
+    padding:70px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.login-left::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:550px;
+
+    height:550px;
+
+    border-radius:50%;
+
+    background:rgba(37,99,235,.12);
+
+    top:-220px;
+
+    left:-180px;
+
+    filter:blur(10px);
+
+}
+
+.login-left::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:450px;
+
+    height:450px;
+
+    border-radius:50%;
+
+    background:rgba(6,182,212,.10);
+
+    bottom:-180px;
+
+    right:-150px;
+
+}
+
+/* ===============================
+   LOGO
+================================ */
+
+.logo-circle{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:22px;
+
+    background:rgba(37,99,235,.15);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    margin-bottom:30px;
+
+    border:1px solid rgba(255,255,255,.1);
+
+    backdrop-filter:blur(20px);
+
+    box-shadow:0 0 30px rgba(37,99,235,.4);
+
+}
+
+.logo-circle i{
+
+    font-size:42px;
+
+    color:#60A5FA;
+
+}
+
+.login-left h1{
+
+    font-size:52px;
+
+    font-weight:800;
+
+    margin-bottom:10px;
+
+}
+
+.login-left h5{
+
+    color:#94A3B8;
+
+    font-size:23px;
+
+    margin-bottom:50px;
+
+    font-weight:400;
+
+}
+/* ===============================
+   FEATURES
+================================ */
+
+.features{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.features p{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-size:18px;
+
+    color:#E2E8F0;
+
+    margin:0;
+
+}
+
+.features i{
+
+    color:#22C55E;
+
+    font-size:20px;
+
+}
+
+/* ===============================
+   RIGHT SIDE
+================================ */
+
+.login-right{
+
+    width:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:60px;
+
+}
+
+/* ===============================
+   LOGIN CARD
+================================ */
+
+.login-card{
+
+    width:100%;
+
+    max-width:470px;
+
+    background:rgba(15,23,42,.88);
+
+    backdrop-filter:blur(25px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:24px;
+
+    padding:45px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.45),
+        0 0 30px rgba(37,99,235,.20);
+
+}
+
+.login-card h2{
+
+    color:white;
+
+    font-size:38px;
+
+    font-weight:700;
+
+    margin-bottom:8px;
+
+}
+
+.login-card .text-secondary{
+
+    color:#94A3B8 !important;
+
+    margin-bottom:35px;
+
+}
+
+/* ===============================
+   FORM
+================================ */
+
+.login-card label{
+
+    color:#CBD5E1;
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+}
+
+.login-card .form-control{
+
+    background:#111827;
+
+    border:1px solid #334155;
+
+    color:white;
+
+    border-radius:14px;
+
+    padding:14px 18px;
+
+}
+
+.login-card .form-control:focus{
+
+    background:#111827;
+
+    color:white;
+
+    border-color:#2563EB;
+
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.25);
+
+}
+
+.login-card .form-check-label{
+
+    color:#CBD5E1;
+
+}
+/* ===============================
+   BUTTON
+================================ */
+
+.login-card .btn-primary{
+
+    width:100%;
+
+    background:linear-gradient(135deg,#2563EB,#1D4ED8);
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:15px;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.login-card .btn-primary:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 30px rgba(37,99,235,.35);
+
+    background:linear-gradient(135deg,#3B82F6,#2563EB);
+
+}
+
+/* ===============================
+   LINKS
+================================ */
+
+.login-card a{
+
+    color:#60A5FA;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.login-card a:hover{
+
+    color:white;
+
+}
+
+/* ===============================
+   CHECKBOX
+================================ */
+
+.form-check-input{
+
+    background:#111827;
+
+    border:1px solid #475569;
+
+}
+
+.form-check-input:checked{
+
+    background:#2563EB;
+
+    border-color:#2563EB;
+
+}
+
+/* ===============================
+   ANIMATION
+================================ */
+
+.login-card{
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+
+@media(max-width:991px){
+
+.login-page{
+
+    flex-direction:column;
+
+}
+
+.login-left{
+
+    width:100%;
+
+    padding:60px 30px;
+
+}
+
+.login-right{
+
+    width:100%;
+
+    padding:30px;
+
+}
+
+.login-card{
+
+    max-width:100%;
+
+}
+
+}
+
+@media(max-width:576px){
+
+.login-left h1{
+
+    font-size:38px;
+
+}
+
+.login-card{
+
+    padding:30px;
+
+}
+
+}

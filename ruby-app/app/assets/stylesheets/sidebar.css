@@ -1,0 +1,80 @@
+/* ==========================
+   Sidebar
+========================== */
+
+.sidebar {
+    background: #0f172a;
+    min-height: 100vh;
+    color: #ffffff;
+    padding: 30px 20px;
+    border-right: 1px solid #1e293b;
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.logo h3 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.logo p {
+    color: #94a3b8;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.logo hr {
+    border-color: rgba(255,255,255,.15);
+}
+
+/* ==========================
+   Menu
+========================== */
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    margin-bottom: 8px;
+}
+
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: #cbd5e1;
+    text-decoration: none;
+
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    transition: all .25s ease;
+}
+
+.menu a i {
+    font-size: 18px;
+}
+
+.menu a:hover {
+    background: #2563eb;
+    color: white;
+    transform: translateX(5px);
+}
+
+.menu a.active {
+    background: #2563eb;
+    color: white;
+}

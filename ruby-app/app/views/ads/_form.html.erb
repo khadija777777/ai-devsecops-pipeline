@@ -1,0 +1,152 @@
+<div class="container-fluid">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1 text-white">
+        <%= ad.new_record? ? "Add New Asset" : "Edit Asset" %>
+      </h2>
+
+      <p class="text-secondary mb-0">
+        Register an infrastructure asset for monitoring and security analysis.
+      </p>
+    </div>
+
+    <%= link_to "Back", ads_path, class: "btn btn-outline-light px-4" %>
+  </div>
+
+  <div class="card border-0 shadow-lg rounded-4" style="background:#10192d;">
+
+    <div class="card-header py-4 px-4 border-0"
+         style="background:#16213d;border-radius:16px 16px 0 0;">
+
+      <h4 class="text-white fw-bold mb-0">
+        Asset Information
+      </h4>
+
+    </div>
+
+    <div class="card-body p-5">
+
+      <%= form_with(model: ad, local: true, html: { multipart: true }) do |form| %>
+
+        <% if ad.errors.any? %>
+
+          <div class="alert alert-danger">
+
+            <strong>
+              <%= pluralize(ad.errors.count,"error") %>
+              prevented this asset from being saved.
+            </strong>
+
+            <ul class="mt-2 mb-0">
+              <% ad.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+
+          </div>
+
+        <% end %>
+
+        <div class="row">
+
+          <div class="col-md-6 mb-4">
+            <%= form.label :title,"Asset Name",class:"form-label text-light fw-semibold" %>
+            <%= form.text_field :title,class:"form-control form-control-lg" %>
+          </div>
+
+          <div class="col-md-6 mb-4">
+            <%= form.label :category,"Asset Type",class:"form-label text-light fw-semibold" %>
+            <%= form.select :category,
+                ["Laptop","Desktop","Server","Router","Switch","Firewall","Virtual Machine"],
+                {},
+                class:"form-select form-select-lg" %>
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-6 mb-4">
+            <%= form.label :operating_system,class:"form-label text-light fw-semibold" %>
+            <%= form.select :operating_system,
+                ["Ubuntu 22.04","Ubuntu 24.04","Debian","Windows 11","Windows Server","Kali Linux","CentOS"],
+                {},
+                class:"form-select form-select-lg" %>
+          </div>
+
+          <div class="col-md-6 mb-4">
+            <%= form.label :ip_address,"IP Address",class:"form-label text-light fw-semibold" %>
+            <%= form.text_field :ip_address,class:"form-control form-control-lg",placeholder:"192.168.1.10" %>
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-4 mb-4">
+            <%= form.label :criticality,class:"form-label text-light fw-semibold" %>
+
+            <%= form.select :criticality,
+                ["Low","Medium","High","Critical"],
+                {},
+                class:"form-select form-select-lg" %>
+          </div>
+
+          <div class="col-md-4 mb-4">
+
+            <%= form.label :status,class:"form-label text-light fw-semibold" %>
+
+            <%= form.select :status,
+                ["Healthy","Warning","Vulnerable","Offline"],
+                {},
+                class:"form-select form-select-lg" %>
+
+          </div>
+
+          <div class="col-md-4 mb-4">
+
+            <%= form.label :price,"Asset Value (DH)",class:"form-label text-light fw-semibold" %>
+
+            <%= form.number_field :price,
+                step:0.01,
+                class:"form-control form-control-lg" %>
+
+          </div>
+
+        </div>
+
+        <div class="mb-4">
+
+          <%= form.label :description,class:"form-label text-light fw-semibold" %>
+
+          <%= form.text_area :description,
+              rows:5,
+              class:"form-control" %>
+
+        </div>
+
+        <div class="mb-5">
+
+          <%= form.label :image,class:"form-label text-light fw-semibold" %>
+
+          <%= form.file_field :image,class:"form-control form-control-lg" %>
+
+        </div>
+
+        <div class="d-flex justify-content-end">
+
+          <%= form.submit(
+              ad.new_record? ? "Register Asset" : "Update Asset",
+              class:"btn btn-primary btn-lg px-5"
+          ) %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </div>
+
+</div>

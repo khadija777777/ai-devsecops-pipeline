@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #f4f7fc;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #1e293b;
+}
+
+.content {
+    padding: 35px;
+    min-height: 100vh;
+}
+
+.topbar {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 18px 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 15px rgba(0,0,0,.08);
+}
+
+.topbar h4 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.btn-primary {
+    background: #2563eb;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
