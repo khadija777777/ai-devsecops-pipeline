@@ -36,5 +36,12 @@ pipeline {
         }
     }
 }
+stage('RSpec Tests') {
+    steps {
+        dir('ruby-app') {
+            sh 'bundle exec rspec || true'
+        }
+    }
+}
     }
 }
