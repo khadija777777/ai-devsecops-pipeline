@@ -29,6 +29,12 @@ pipeline {
                 }
             }
         }
-
+        stage('RuboCop') {
+            steps {
+                dir('ruby-app') {
+                    sh 'bundle exec rubocop || true'
+        }
+    }
+}
     }
 }
