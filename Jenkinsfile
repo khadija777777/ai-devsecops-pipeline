@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        RBENV_ROOT = '/var/lib/jenkins/.rbenv'
+        RBENV_VERSION = '3.4.10'
+        PATH+RBENV = '/var/lib/jenkins/.rbenv/bin:/var/lib/jenkins/.rbenv/shims'
+    }
+
     stages {
 
         stage('Informations système') {
@@ -13,12 +19,15 @@ pipeline {
         stage('Version Ruby') {
             steps {
                 sh 'ruby --version'
+                sh 'which ruby'
             }
         }
 
         stage('Version Rails') {
             steps {
-                sh 'rails --version'
+                dir('ruby-app') {
+                    sh 'bundle exec rails --version'
+                }
             }
         }
 
@@ -33,7 +42,7 @@ pipeline {
         stage('RuboCop') {
             steps {
                 dir('ruby-app') {
-                    sh 'bundle exec rubocop || true'
+                    sh 'bundle exec rubocop'
                 }
             }
         }
@@ -41,7 +50,7 @@ pipeline {
         stage('RSpec Tests') {
             steps {
                 dir('ruby-app') {
-                    sh 'bundle exec rspec || true'
+                    sh 'bundle exec rspec'
                 }
             }
         }
