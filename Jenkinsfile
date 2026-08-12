@@ -61,5 +61,12 @@ environment {
                 }
             }
         }
+        stage('Dependency Scan') {
+            steps {
+                dir('ruby-app') {
+                    sh 'bundle exec bundler-audit check --update'
+        }
+    }
+}
     }
 }
