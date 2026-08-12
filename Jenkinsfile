@@ -29,19 +29,29 @@ pipeline {
                 }
             }
         }
+
         stage('RuboCop') {
             steps {
                 dir('ruby-app') {
                     sh 'bundle exec rubocop || true'
+                }
+            }
         }
-    }
-}
-stage('RSpec Tests') {
-    steps {
-        dir('ruby-app') {
-            sh 'bundle exec rspec || true'
+
+        stage('RSpec Tests') {
+            steps {
+                dir('ruby-app') {
+                    sh 'bundle exec rspec || true'
+                }
+            }
         }
-    }
-}
+
+        stage('Brakeman - SAST') {
+            steps {
+                dir('ruby-app') {
+                    sh 'bundle exec brakeman'
+                }
+            }
+        }
     }
 }
