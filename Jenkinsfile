@@ -1,12 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        RBENV_ROOT = '/var/lib/jenkins/.rbenv'
-        RBENV_VERSION = '3.4.10'
-        PATH+RBENV = '/var/lib/jenkins/.rbenv/bin:/var/lib/jenkins/.rbenv/shims'
-    }
-
+environment {
+    RBENV_ROOT = '/var/lib/jenkins/.rbenv'
+    RBENV_VERSION = '3.4.10'
+    PATH = "/var/lib/jenkins/.rbenv/bin:/var/lib/jenkins/.rbenv/shims:$PATH"
+}
     stages {
 
         stage('Informations système') {
