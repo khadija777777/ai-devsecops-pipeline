@@ -73,6 +73,17 @@ stage('Docker Build') {
         sh 'docker build -t ai-devsecops-ruby:latest ./ruby-app'
     }
 }
-
+stage('Trivy - Image Scan') {
+    steps {
+        sh '''
+            trivy image \
+              --db-repository ghcr.io/aquasecurity/trivy-db:2 \
+              --scanners vuln \
+              --pkg-types os \
+              ai-devsecops-ruby:latest
+        '''
+    }
 }
 }
+}
+ 
