@@ -15,29 +15,28 @@ environment {
             }
         }
 
-        stage('Version Ruby') {
-            steps {
-                sh 'ruby --version'
-                sh 'which ruby'
-            }
-        }
+stage('Version Ruby') {
+    steps {
+        sh 'ruby --version'
+        sh 'which ruby'
+    }
+}
 
-        stage('Version Rails') {
-            steps {
-                dir('ruby-app') {
-                    sh 'bundle exec rails --version'
-                }
-            }
+stage('Installer les dépendances') {
+    steps {
+        dir('ruby-app') {
+            sh 'bundle install'
         }
+    }
+}
 
-        stage('Installer les dépendances') {
-            steps {
-                dir('ruby-app') {
-                    sh 'bundle install'
-                }
-            }
+stage('Version Rails') {
+    steps {
+        dir('ruby-app') {
+            sh 'bundle exec rails --version'
         }
-
+    }
+}
         stage('RuboCop') {
             steps {
                 dir('ruby-app') {
