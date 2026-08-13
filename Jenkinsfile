@@ -61,12 +61,19 @@ environment {
                 }
             }
         }
-        stage('Dependency Scan') {
-            steps {
-                dir('ruby-app') {
-                    sh 'bundle exec bundler-audit check --update'
+stage('Dependency Scan') {
+    steps {
+        dir('ruby-app') {
+            sh 'bundle exec bundler-audit check --update'
         }
     }
 }
+
+stage('Docker Build') {
+    steps {
+        sh 'docker build -t ai-devsecops-ruby:latest ./ruby-app'
     }
+}
+
+}
 }
