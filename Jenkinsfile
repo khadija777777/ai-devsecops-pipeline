@@ -102,14 +102,14 @@ pipeline {
 
                     docker run -d \
                       --name rails-zap-target \
-                      -p 3000:80 \
+                      -p 3001:80 \
                       -e SECRET_KEY_BASE="$SECRET_KEY_BASE" \
                       ai-devsecops-ruby:latest
 
                     echo "=== Attente du démarrage de Rails ==="
 
                     for i in $(seq 1 30); do
-                        if curl -s -o /dev/null http://localhost:3000; then
+                        if curl -s -o /dev/null http://localhost:3001; then
                             echo "Rails est disponible."
                             break
                         fi
@@ -119,7 +119,7 @@ pipeline {
                     done
 
                     echo "=== Vérification de l'application ==="
-                    curl -I http://localhost:3000 || true
+                    curl -I http://localhost:3001 || true
 
                     mkdir -p reports
 
@@ -128,7 +128,7 @@ pipeline {
                     /snap/zaproxy/70/zap.sh \
                       -cmd \
                       -port 8090 \
-                      -quickurl http://localhost:3000 \
+                      -quickurl http://localhost:3001 \
                       -quickprogress \
                       -quickout "$WORKSPACE/reports/zap-report.xml"
 
@@ -167,6 +167,32 @@ pipeline {
                 }
             }
         }
+        stage('Deploy') {
+    steps {
+        sh '''
+            echo "=== Déploiement de l'application ==="
+
+docker rm -f rails-app 2>/dev/null || true
+
+docker volume create rails-storage 2>/dev/null || true
+
+docker run -d \
+  --name rails-app \
+  -p 3000:80 \
+  -e SECRET_KEY_BASE="$(openssl rand -hex 64)" \
+  -v rails-storage:/rails/storage \
+  ai-devsecops-ruby:latest
+            echo "=== Attente du démarrage ==="
+            sleep 10
+
+            echo "=== Vérification de l'application ==="
+            curl -I http://localhost:3000
+
+            echo "=== Déploiement terminé ==="
+        '''
+    }
+}
+
     }
 
     post {
