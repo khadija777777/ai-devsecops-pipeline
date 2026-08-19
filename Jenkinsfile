@@ -89,63 +89,66 @@ pipeline {
             }
         }
 
-        stage('OWASP ZAP - DAST') {
-            steps {
-                sh '''
-                    set -e
+stage('OWASP ZAP - DAST') {
+    steps {
+        sh '''
+            set -e
 
-                    echo "=== Nettoyage ancien conteneur ZAP ==="
-                    docker rm -f rails-zap-target 2>/dev/null || true
+            echo "=== Nettoyage ancien conteneur Rails ==="
+            docker rm -f rails-zap-target 2>/dev/null || true
 
-                    echo "=== Démarrage de l'application Rails ==="
-                    SECRET_KEY_BASE=$(openssl rand -hex 64)
+            echo "=== Démarrage de l'application Rails ==="
 
-                    docker run -d \
-                      --name rails-zap-target \
-                      -p 3001:80 \
-                      -e SECRET_KEY_BASE="$SECRET_KEY_BASE" \
-                      ai-devsecops-ruby:latest
+            SECRET_KEY_BASE=$(openssl rand -hex 64)
 
-                    echo "=== Attente du démarrage de Rails ==="
+            docker run -d \
+              --name rails-zap-target \
+              -p 3002:80 \
+              -e SECRET_KEY_BASE="$SECRET_KEY_BASE" \
+              ai-devsecops-ruby:latest
 
-                    for i in $(seq 1 30); do
-                        if curl -s -o /dev/null http://localhost:3001; then
-                            echo "Rails est disponible."
-                            break
-                        fi
+            echo "=== Attente du démarrage de Rails ==="
 
-                        echo "Rails n'est pas encore prêt... ($i/30)"
-                        sleep 2
-                    done
+            for i in $(seq 1 30); do
+                if curl -s -o /dev/null http://localhost:3002; then
+                    echo "Rails est disponible."
+                    break
+                fi
 
-                    echo "=== Vérification de l'application ==="
-                    curl -I http://localhost:3001 || true
+                echo "Rails n'est pas encore prêt... ($i/30)"
+                sleep 2
+            done
 
-                    mkdir -p reports
+            echo "=== Vérification de l'application ==="
+            curl -I http://localhost:3002 || true
 
-                    echo "=== Lancement OWASP ZAP ==="
+            mkdir -p reports
 
-                    /snap/zaproxy/70/zap.sh \
-                      -cmd \
-                      -port 8090 \
-                      -quickurl http://localhost:3001 \
-                      -quickprogress \
-                      -quickout "$WORKSPACE/reports/zap-report.xml"
+            echo "=== Lancement OWASP ZAP avec Docker ==="
 
-                    echo "=== Rapport ZAP ==="
-                    ls -lh reports/zap-report.xml
-                '''
-            }
+            docker run --rm \
+              --network host \
+              -v "$WORKSPACE/reports:/zap/wrk:rw" \
+              zaproxy/zap-stable \
+              zap-baseline.py \
+              -t http://localhost:3002 \
+              -r zap-report.html \
+              -x zap-report.xml \
+              || true
 
-            post {
-                always {
-                    sh '''
-                        docker rm -f rails-zap-target 2>/dev/null || true
-                    '''
-                }
-            }
+            echo "=== Rapport ZAP ==="
+            ls -lh reports/
+        '''
+    }
+
+    post {
+        always {
+            sh '''
+                docker rm -f rails-zap-target 2>/dev/null || true
+            '''
         }
-
+    }
+}
         stage('Docker Push') {
             steps {
                 withCredentials([
