@@ -94,11 +94,10 @@ stage('OWASP ZAP - DAST') {
         sh '''
             set -e
 
-            echo "=== Nettoyage ancien conteneur Rails ==="
+            echo "=== Nettoyage ancien conteneur ZAP ==="
             docker rm -f rails-zap-target 2>/dev/null || true
 
             echo "=== Démarrage de l'application Rails ==="
-
             SECRET_KEY_BASE=$(openssl rand -hex 64)
 
             docker run -d \
@@ -120,24 +119,21 @@ stage('OWASP ZAP - DAST') {
             done
 
             echo "=== Vérification de l'application ==="
-            curl -I http://localhost:3002 || true
+            curl -I http://localhost:3002
 
             mkdir -p reports
 
-            echo "=== Lancement OWASP ZAP avec Docker ==="
+            echo "=== Lancement OWASP ZAP ==="
 
-            docker run --rm \
-              --network host \
-              -v "$WORKSPACE/reports:/zap/wrk:rw" \
-              zaproxy/zap-stable \
-              zap-baseline.py \
-              -t http://localhost:3002 \
-              -r zap-report.html \
-              -x zap-report.xml \
-              || true
+            /snap/zaproxy/76/zap.sh \
+              -cmd \
+              -port 8090 \
+              -quickurl http://localhost:3002 \
+              -quickprogress \
+              -quickout "$WORKSPACE/reports/zap-report.xml"
 
             echo "=== Rapport ZAP ==="
-            ls -lh reports/
+            ls -lh reports/zap-report.xml
         '''
     }
 
